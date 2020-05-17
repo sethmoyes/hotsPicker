@@ -22,6 +22,23 @@ const (
 	poke
 )
 
+type CompCountName []compCountName
+
+type compCountName struct {
+	Name  string
+	Count int
+}
+
+// CompCount holds the number of comp types across the heroes on the team
+type CompCount struct {
+	TeamFightCount int
+	PickCount      int
+	SplitPushCount int
+	DiveCount      int
+	SafeCount      int
+	PokeCount      int
+}
+
 // Hero represents each hero in HotS
 type Hero struct {
 	Name string

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"regexp"
 	"strings"
 	"syscall"
 
@@ -70,23 +71,97 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
+	if len(text) == 1 {
+		s.ChannelMessageSend(m.ChannelID, "Be sure to include some parameters. Start with '/hots help' if you are unsure what to do.")
+		return
+	}
+
 	if isHeroName(text[1]) {
 		s.ChannelMessageSend(m.ChannelID, stateHeroInfo(text[1]))
-	} else {
+		return
+	}
 
-		switch text[1] {
-		case "help":
-			s.ChannelMessageSend(m.ChannelID, getHelpDialogue())
-		case "us":
-			if !isHeroName(text[2]) {
-				s.ChannelMessageSend(m.ChannelID, "Please use a valid hero name")
+	switch text[1] {
+	case "help":
+		s.ChannelMessageSend(m.ChannelID, getHelpDialogue())
+	case "us":
+		if !isHeroName(text[2]) {
+			s.ChannelMessageSend(m.ChannelID, "Please use a valid hero name")
+		}
+		heroName := text[2]
+		s.ChannelMessageSend(m.ChannelID, stateHeroInfo(heroName))
+	case "team":
+		var heroes []string
+		for i := 2; i < len(text); i++ {
+			heroes = append(heroes, text[i])
+		}
+		s.ChannelMessageSend(m.ChannelID, analyzeTeamComp(heroes))
+	default:
+		s.ChannelMessageSend(m.ChannelID, "I didn't catch that. Please try '/hots help' for more info")
+	}
+
+}
+
+func analyzeTeamComp(candidates []string) string {
+	var allHeroes []models.Hero
+
+	for _, candidate := range candidates {
+		hero, e := findHeroFromCandidate(candidate)
+		if e != nil {
+			return fmt.Sprintf("I don't know who %s is...", candidate)
+		}
+		allHeroes = append(allHeroes, hero)
+	}
+
+	var compCount models.CompCount
+	fmt.Println(allHeroes)
+	for _, hero := range allHeroes {
+		for _, heroComp := range hero.Comp {
+			switch heroComp {
+			case 0:
+				compCount.TeamFightCount++
+			case 1:
+				compCount.PickCount++
+			case 2:
+				compCount.SplitPushCount++
+			case 3:
+				compCount.DiveCount++
+			case 4:
+				compCount.SafeCount++
+			case 5:
+				compCount.PokeCount++
 			}
-			heroName := text[2]
-			s.ChannelMessageSend(m.ChannelID, stateHeroInfo(heroName))
-		default:
-			s.ChannelMessageSend(m.ChannelID, "I didn't catch that. Please try '/hots help' for more info")
 		}
 	}
+
+	var compCountName = make(models.CompCountName, 6)
+
+	compCountName[0].Name = "Team Fight"
+	compCountName[0].Count = compCount.TeamFightCount
+	compCountName[1].Name = "Pick"
+	compCountName[1].Count = compCount.PickCount
+	compCountName[2].Name = "Split Push"
+	compCountName[2].Count = compCount.SplitPushCount
+	compCountName[3].Name = "Dive"
+	compCountName[3].Count = compCount.DiveCount
+	compCountName[4].Name = "Safe"
+	compCountName[4].Count = compCount.SafeCount
+	compCountName[5].Name = "Poke"
+	compCountName[5].Count = compCount.PokeCount
+
+	fmt.Println(compCountName)
+
+	var greatest string
+	var n int
+	//DOES NOT CONSIDER TIED VALUES
+	for _, v := range compCountName {
+		if v.Count > n {
+			n = v.Count
+			greatest = v.Name
+		}
+	}
+
+	return greatest
 }
 
 func stateHeroInfo(candidate string) string {
@@ -98,6 +173,25 @@ func stateHeroInfo(candidate string) string {
 	return fmt.Sprintf("%s is a %s that is good in %+v comps", strings.Title(hero.Name), hero.Role, comps)
 }
 
+func getCompName(candidate models.Comp) string {
+
+	switch candidate {
+	case 0:
+		return "team fight"
+	case 1:
+		return "pick"
+	case 2:
+		return "split push"
+	case 3:
+		return "dive"
+	case 4:
+		return "safe"
+	case 5:
+		return "poke"
+	}
+
+	return ""
+}
 func generateCompList(comp []models.Comp) string {
 	var list string
 	for _, x := range comp {
@@ -107,7 +201,7 @@ func generateCompList(comp []models.Comp) string {
 		case 1:
 			list += "pick/"
 		case 2:
-			list += "split/"
+			list += "split push"
 		case 3:
 			list += "dive/"
 		case 4:
@@ -121,7 +215,7 @@ func generateCompList(comp []models.Comp) string {
 }
 
 func getHelpDialogue() string {
-	return "This is the help menu\nUse the command '/hots us *hero-name*' to query a hero"
+	return "This is the help menu\nUse the command '/hots *hero-name*' to query a hero\nUse '/hots team *hero-name*' with up to five hero names to see what type of comp you are going and who would make a good addition to your team"
 }
 
 func stateHeroRolls(candidate string) string {
@@ -139,8 +233,14 @@ func isHeroName(candidate string) bool {
 }
 
 func findHeroFromCandidate(candidate string) (models.Hero, error) {
+	reg, err := regexp.Compile("[^a-zA-Z]+")
+	if err != nil {
+		return models.Hero{}, err
+	}
+	processedString := reg.ReplaceAllString(candidate, "")
 	for _, hero := range models.AllHeroes {
-		if hero.Name == strings.ToLower(candidate) {
+		processedHeroName := reg.ReplaceAllString(hero.Name, "")
+		if strings.ToLower(processedHeroName) == strings.ToLower(processedString) {
 			return hero, nil
 		}
 	}
