@@ -1,31 +1,31 @@
 package heroes
 
-type role string
+type Role string
 
 const (
-	rangedAssassin role = "Ranged Assassin"
-	meleeAssassin       = "Melee Assassin"
-	bruiser             = "Bruiser"
-	tank                = "Tank"
-	support             = "Support"
-	healer              = "Healer"
+	RangedAssassin Role = "Ranged Assassin"
+	MeleeAssassin       = "Melee Assassin"
+	Bruiser             = "Bruiser"
+	Tank                = "Tank"
+	Support             = "Support"
+	Healer              = "Healer"
 )
 
 type Comp int
 
 const (
-	teamFight Comp = iota
-	pick
-	splitPush
-	dive
-	safe
-	poke
+	TeamFight Comp = iota
+	Pick
+	SplitPush
+	Dive
+	Safe
+	Poke
 )
 
 type CompCountName []compCountName
 
 type compCountName struct {
-	Name  string
+	Name  Comp
 	Count int
 }
 
@@ -44,100 +44,109 @@ type Hero struct {
 	Name string
 	// Difficulty string
 	// Universe   string
-	Role role
+	Role Role
 	Comp []Comp
 }
 
-var abathur = Hero{Name: "Abathur", Role: support, Comp: []Comp{splitPush, teamFight}}
-var alarak = Hero{Name: "Alarak", Role: meleeAssassin, Comp: []Comp{teamFight}}
-var alexstrasza = Hero{Name: "Alexstraza", Role: healer, Comp: []Comp{teamFight, poke}}
-var ana = Hero{Name: "Ana", Role: healer, Comp: []Comp{safe, teamFight}}
-var anduin = Hero{Name: "Anduin", Role: healer, Comp: []Comp{teamFight, safe}}
-var anubarak = Hero{Name: "Anub'arak", Role: tank, Comp: []Comp{dive}}
-var artanis = Hero{Name: "Artanis", Role: bruiser, Comp: []Comp{pick, teamFight}}
-var arthas = Hero{Name: "Arthas", Role: tank, Comp: []Comp{teamFight, safe}}
-var auriel = Hero{Name: "Auriel", Role: healer, Comp: []Comp{safe}}
-var azmodan = Hero{Name: "Azmodan", Role: rangedAssassin, Comp: []Comp{poke, splitPush}}
-var blaze = Hero{Name: "Blaze", Role: tank, Comp: []Comp{teamFight, dive, safe}}
-var brightwing = Hero{Name: "Brightwing", Role: healer, Comp: []Comp{safe, splitPush}}
-var cassia = Hero{Name: "Cassia", Role: meleeAssassin, Comp: []Comp{dive, teamFight}}
-var chen = Hero{Name: "Chen", Role: tank, Comp: []Comp{teamFight, pick, dive}}
-var cho = Hero{Name: "Cho", Role: tank, Comp: []Comp{teamFight, poke}}
-var chromie = Hero{Name: "Chromie", Role: rangedAssassin, Comp: []Comp{poke}}
-var dva = Hero{Name: "D.Va", Role: tank, Comp: []Comp{dive, teamFight}}
-var deathwing = Hero{Name: "Deathwing", Role: tank, Comp: []Comp{teamFight, splitPush}}
-var deckard = Hero{Name: "Deckard", Role: healer, Comp: []Comp{teamFight, safe, pick}}
-var dehaka = Hero{Name: "Dehaka", Role: tank, Comp: []Comp{splitPush, pick}}
-var diablo = Hero{Name: "Dibalo", Role: tank, Comp: []Comp{teamFight, pick, safe}}
-var etc = Hero{Name: "E.T.C", Role: tank, Comp: []Comp{teamFight, safe}}
-var falstad = Hero{Name: "Falstad", Role: rangedAssassin, Comp: []Comp{splitPush, teamFight}}
-var fenix = Hero{Name: "Fenix", Role: rangedAssassin, Comp: []Comp{teamFight, dive}}
-var gall = Hero{Name: "Gall", Role: rangedAssassin, Comp: []Comp{teamFight, poke}}
-var garrosh = Hero{Name: "Garrosh", Role: tank, Comp: []Comp{pick, teamFight, safe}}
-var gazlowe = Hero{Name: "Gazlowe", Role: meleeAssassin, Comp: []Comp{splitPush, poke}}
-var genji = Hero{Name: "Genji", Role: meleeAssassin, Comp: []Comp{dive, teamFight}}
-var greymane = Hero{Name: "Graymane", Role: rangedAssassin, Comp: []Comp{dive, safe, splitPush}}
-var guldan = Hero{Name: "Gul'dan", Role: rangedAssassin, Comp: []Comp{teamFight, safe, poke}}
-var hanzo = Hero{Name: "Hanzo", Role: rangedAssassin, Comp: []Comp{poke, teamFight}}
-var illidan = Hero{Name: "Illidan", Role: meleeAssassin, Comp: []Comp{dive, splitPush}}
-var imperius = Hero{Name: "Imperius", Role: bruiser, Comp: []Comp{teamFight, pick}}
-var jaina = Hero{Name: "Jaina", Role: rangedAssassin, Comp: []Comp{teamFight, poke}}
-var johanna = Hero{Name: "Johanna", Role: tank, Comp: []Comp{teamFight, safe}}
-var junkrat = Hero{Name: "Junkrat", Role: rangedAssassin, Comp: []Comp{pick, splitPush, poke}}
-var kaelthas = Hero{Name: "Kael'thas", Role: rangedAssassin, Comp: []Comp{teamFight, poke, pick}}
-var kelthuzad = Hero{Name: "Kel'Thuzad", Role: rangedAssassin, Comp: []Comp{poke, teamFight}}
-var kerrigan = Hero{Name: "Kerrigan", Role: meleeAssassin, Comp: []Comp{dive, teamFight}}
-var kharazim = Hero{Name: "Kharazim", Role: healer, Comp: []Comp{dive}}
-var leoric = Hero{Name: "Leoric", Role: bruiser, Comp: []Comp{teamFight, splitPush}}
-var lili = Hero{Name: "Li li", Role: healer, Comp: []Comp{teamFight, safe}}
-var liming = Hero{Name: "Li-Ming", Role: rangedAssassin, Comp: []Comp{poke, teamFight}}
-var ltmorales = Hero{Name: "Lt. Morales", Role: healer, Comp: []Comp{safe}}
-var lucio = Hero{Name: "Lucio", Role: healer, Comp: []Comp{teamFight, safe, dive}}
-var lunara = Hero{Name: "Lunara", Role: rangedAssassin, Comp: []Comp{teamFight, poke}}
-var maiev = Hero{Name: "Maiev", Role: meleeAssassin, Comp: []Comp{teamFight, dive}}
-var malganis = Hero{Name: "Mal'Ganis", Role: tank, Comp: []Comp{dive, teamFight, safe}}
-var malfurion = Hero{Name: "Malfurion", Role: healer, Comp: []Comp{teamFight, pick, poke}}
-var malthael = Hero{Name: "Malthael", Role: meleeAssassin, Comp: []Comp{dive, splitPush}}
-var medivh = Hero{Name: "Medivh", Role: support, Comp: []Comp{poke, safe, teamFight}}
-var mephisto = Hero{Name: "Mephisto", Role: rangedAssassin, Comp: []Comp{poke, teamFight}}
-var muradin = Hero{Name: "Muradin", Role: tank, Comp: []Comp{teamFight, safe, dive, pick}}
-var murky = Hero{Name: "Murky", Role: meleeAssassin, Comp: []Comp{splitPush, pick}}
-var nazeebo = Hero{Name: "Nazeebo", Role: rangedAssassin, Comp: []Comp{splitPush, teamFight, poke}}
-var nova = Hero{Name: "Nova", Role: rangedAssassin, Comp: []Comp{pick}}
-var orphea = Hero{Name: "Orphea", Role: rangedAssassin, Comp: []Comp{teamFight, safe, poke}}
-var probius = Hero{Name: "Probius", Role: rangedAssassin, Comp: []Comp{splitPush, poke}}
-var qhira = Hero{Name: "Qhira", Role: meleeAssassin, Comp: []Comp{dive}}
-var ragnaros = Hero{Name: "Ragnaros", Role: meleeAssassin, Comp: []Comp{splitPush, teamFight}}
-var raynor = Hero{Name: "Raynor", Role: rangedAssassin, Comp: []Comp{safe, teamFight}}
-var rehgar = Hero{Name: "Rehgar", Role: healer, Comp: []Comp{teamFight, dive, safe}}
-var rexxar = Hero{Name: "Rexxar", Role: tank, Comp: []Comp{splitPush}}
-var samuro = Hero{Name: "Samuro", Role: meleeAssassin, Comp: []Comp{splitPush, dive}}
-var sgthammer = Hero{Name: "Sgt. Hammer", Role: rangedAssassin, Comp: []Comp{splitPush, teamFight, safe, poke}}
-var sonya = Hero{Name: "Sonya", Role: bruiser, Comp: []Comp{teamFight, splitPush}}
-var stitches = Hero{Name: "Stitches", Role: tank, Comp: []Comp{pick, teamFight}}
-var stukov = Hero{Name: "Stukov", Role: healer, Comp: []Comp{teamFight, safe, dive}}
-var sylvanas = Hero{Name: "Sylvanas", Role: rangedAssassin, Comp: []Comp{splitPush, teamFight}}
-var tassadar = Hero{Name: "Tassadar", Role: rangedAssassin, Comp: []Comp{poke, teamFight}}
-var thebutcher = Hero{Name: "The Butcher", Role: meleeAssassin, Comp: []Comp{pick, dive}}
-var thelostvikings = Hero{Name: "The Lost Vikings", Role: support, Comp: []Comp{splitPush}}
-var thrall = Hero{Name: "Thrall", Role: meleeAssassin, Comp: []Comp{dive, teamFight}}
-var tracer = Hero{Name: "Tracer", Role: rangedAssassin, Comp: []Comp{dive, teamFight}}
-var tychus = Hero{Name: "Tychus", Role: rangedAssassin, Comp: []Comp{teamFight, safe}}
-var tyrael = Hero{Name: "Tyrael", Role: tank, Comp: []Comp{teamFight, dive, safe}}
-var tyrande = Hero{Name: "Tyrande", Role: healer, Comp: []Comp{teamFight, poke}}
-var uther = Hero{Name: "Uther", Role: healer, Comp: []Comp{safe}}
-var valeera = Hero{Name: "Valeera", Role: meleeAssassin, Comp: []Comp{dive, pick}}
-var valla = Hero{Name: "Valla", Role: rangedAssassin, Comp: []Comp{teamFight, pick}}
-var varian = Hero{Name: "Varian", Role: tank, Comp: []Comp{dive, teamFight}}
-var whitemane = Hero{Name: "Whitemane", Role: healer, Comp: []Comp{teamFight, safe}}
-var xul = Hero{Name: "Xul", Role: meleeAssassin, Comp: []Comp{splitPush, teamFight}}
-var yrel = Hero{Name: "Yrel", Role: bruiser, Comp: []Comp{teamFight, dive, safe}}
-var zagara = Hero{Name: "Zagara", Role: rangedAssassin, Comp: []Comp{poke, splitPush}}
-var zarya = Hero{Name: "Zarya", Role: support, Comp: []Comp{teamFight, safe}}
-var zeratul = Hero{Name: "Zeratul", Role: meleeAssassin, Comp: []Comp{dive, pick}}
-var zuljin = Hero{Name: "Zul'jin", Role: rangedAssassin, Comp: []Comp{safe, teamFight}}
+var abathur = Hero{Name: "Abathur", Role: Support, Comp: []Comp{SplitPush, TeamFight}}
+var alarak = Hero{Name: "Alarak", Role: MeleeAssassin, Comp: []Comp{TeamFight}}
+var alexstrasza = Hero{Name: "Alexstraza", Role: Healer, Comp: []Comp{TeamFight, Poke}}
+var ana = Hero{Name: "Ana", Role: Healer, Comp: []Comp{Safe, TeamFight}}
+var anduin = Hero{Name: "Anduin", Role: Healer, Comp: []Comp{TeamFight, Safe}}
+var anubarak = Hero{Name: "Anub'arak", Role: Tank, Comp: []Comp{Dive}}
+var artanis = Hero{Name: "Artanis", Role: Bruiser, Comp: []Comp{Pick, TeamFight}}
+var arthas = Hero{Name: "Arthas", Role: Tank, Comp: []Comp{TeamFight, Safe}}
+var auriel = Hero{Name: "Auriel", Role: Healer, Comp: []Comp{Safe}}
+var azmodan = Hero{Name: "Azmodan", Role: RangedAssassin, Comp: []Comp{Poke, SplitPush}}
+var blaze = Hero{Name: "Blaze", Role: Tank, Comp: []Comp{TeamFight, Dive, Safe}}
+var brightwing = Hero{Name: "Brightwing", Role: Healer, Comp: []Comp{Safe, SplitPush}}
+var cassia = Hero{Name: "Cassia", Role: MeleeAssassin, Comp: []Comp{Dive, TeamFight}}
+var chen = Hero{Name: "Chen", Role: Tank, Comp: []Comp{TeamFight, Pick, Dive}}
+var cho = Hero{Name: "Cho", Role: Tank, Comp: []Comp{TeamFight, Poke}}
+var chromie = Hero{Name: "Chromie", Role: RangedAssassin, Comp: []Comp{Poke}}
+var dva = Hero{Name: "D.Va", Role: Tank, Comp: []Comp{Dive, TeamFight}}
+var deathwing = Hero{Name: "Deathwing", Role: Tank, Comp: []Comp{TeamFight, SplitPush}}
+var deckard = Hero{Name: "Deckard", Role: Healer, Comp: []Comp{TeamFight, Safe, Pick}}
+var dehaka = Hero{Name: "Dehaka", Role: Tank, Comp: []Comp{SplitPush, Pick}}
+var diablo = Hero{Name: "Diablo", Role: Tank, Comp: []Comp{TeamFight, Pick, Safe}}
+var etc = Hero{Name: "E.T.C", Role: Tank, Comp: []Comp{TeamFight, Safe}}
+var falstad = Hero{Name: "Falstad", Role: RangedAssassin, Comp: []Comp{SplitPush, TeamFight}}
+var fenix = Hero{Name: "Fenix", Role: RangedAssassin, Comp: []Comp{TeamFight, Dive}}
+var gall = Hero{Name: "Gall", Role: RangedAssassin, Comp: []Comp{TeamFight, Poke}}
+var garrosh = Hero{Name: "Garrosh", Role: Tank, Comp: []Comp{Pick, TeamFight, Safe}}
+var gazlowe = Hero{Name: "Gazlowe", Role: MeleeAssassin, Comp: []Comp{SplitPush, Poke}}
+var genji = Hero{Name: "Genji", Role: RangedAssassin, Comp: []Comp{Dive, TeamFight}}
+var greymane = Hero{Name: "Graymane", Role: RangedAssassin, Comp: []Comp{Dive, Safe, SplitPush}}
+var guldan = Hero{Name: "Gul'dan", Role: RangedAssassin, Comp: []Comp{TeamFight, Safe, Poke}}
+var hanzo = Hero{Name: "Hanzo", Role: RangedAssassin, Comp: []Comp{Poke, TeamFight}}
+var illidan = Hero{Name: "Illidan", Role: MeleeAssassin, Comp: []Comp{Dive, SplitPush}}
+var imperius = Hero{Name: "Imperius", Role: Bruiser, Comp: []Comp{TeamFight, Pick}}
+var jaina = Hero{Name: "Jaina", Role: RangedAssassin, Comp: []Comp{TeamFight, Poke}}
+var johanna = Hero{Name: "Johanna", Role: Tank, Comp: []Comp{TeamFight, Safe}}
+var junkrat = Hero{Name: "Junkrat", Role: RangedAssassin, Comp: []Comp{Pick, SplitPush, Poke}}
+var kaelthas = Hero{Name: "Kael'thas", Role: RangedAssassin, Comp: []Comp{TeamFight, Poke, Pick}}
+var kelthuzad = Hero{Name: "Kel'Thuzad", Role: RangedAssassin, Comp: []Comp{Poke, TeamFight}}
+var kerrigan = Hero{Name: "Kerrigan", Role: MeleeAssassin, Comp: []Comp{Dive, TeamFight}}
+var kharazim = Hero{Name: "Kharazim", Role: Healer, Comp: []Comp{Dive}}
+var leoric = Hero{Name: "Leoric", Role: Bruiser, Comp: []Comp{TeamFight, SplitPush}}
+var lili = Hero{Name: "Li li", Role: Healer, Comp: []Comp{TeamFight, Safe}}
+var liming = Hero{Name: "Li-Ming", Role: RangedAssassin, Comp: []Comp{Poke, TeamFight}}
+var ltmorales = Hero{Name: "Lt. Morales", Role: Healer, Comp: []Comp{Safe}}
+var lucio = Hero{Name: "Lucio", Role: Healer, Comp: []Comp{TeamFight, Safe, Dive}}
+var lunara = Hero{Name: "Lunara", Role: RangedAssassin, Comp: []Comp{TeamFight, Poke}}
+var maiev = Hero{Name: "Maiev", Role: MeleeAssassin, Comp: []Comp{TeamFight, Dive}}
+var malganis = Hero{Name: "Mal'Ganis", Role: Tank, Comp: []Comp{Dive, TeamFight, Safe}}
+var malfurion = Hero{Name: "Malfurion", Role: Healer, Comp: []Comp{TeamFight, Pick, Poke}}
+var malthael = Hero{Name: "Malthael", Role: MeleeAssassin, Comp: []Comp{Dive, SplitPush}}
+var medivh = Hero{Name: "Medivh", Role: Support, Comp: []Comp{Poke, Safe, TeamFight}}
+var mephisto = Hero{Name: "Mephisto", Role: RangedAssassin, Comp: []Comp{Poke, TeamFight}}
+var muradin = Hero{Name: "Muradin", Role: Tank, Comp: []Comp{TeamFight, Safe, Dive, Pick}}
+var murky = Hero{Name: "Murky", Role: MeleeAssassin, Comp: []Comp{SplitPush, Pick}}
+var nazeebo = Hero{Name: "Nazeebo", Role: RangedAssassin, Comp: []Comp{SplitPush, TeamFight, Poke}}
+var nova = Hero{Name: "Nova", Role: RangedAssassin, Comp: []Comp{Pick}}
+var orphea = Hero{Name: "Orphea", Role: RangedAssassin, Comp: []Comp{TeamFight, Safe, Poke}}
+var probius = Hero{Name: "Probius", Role: RangedAssassin, Comp: []Comp{SplitPush, Poke}}
+var qhira = Hero{Name: "Qhira", Role: MeleeAssassin, Comp: []Comp{Dive}}
+var ragnaros = Hero{Name: "Ragnaros", Role: MeleeAssassin, Comp: []Comp{SplitPush, TeamFight}}
+var raynor = Hero{Name: "Raynor", Role: RangedAssassin, Comp: []Comp{Safe, TeamFight}}
+var rehgar = Hero{Name: "Rehgar", Role: Healer, Comp: []Comp{TeamFight, Dive, Safe}}
+var rexxar = Hero{Name: "Rexxar", Role: Tank, Comp: []Comp{SplitPush}}
+var samuro = Hero{Name: "Samuro", Role: MeleeAssassin, Comp: []Comp{SplitPush, Dive}}
+var sgthammer = Hero{Name: "Sgt. Hammer", Role: RangedAssassin, Comp: []Comp{SplitPush, TeamFight, Safe, Poke}}
+var sonya = Hero{Name: "Sonya", Role: Bruiser, Comp: []Comp{TeamFight, SplitPush}}
+var stitches = Hero{Name: "Stitches", Role: Tank, Comp: []Comp{Pick, TeamFight}}
+var stukov = Hero{Name: "Stukov", Role: Healer, Comp: []Comp{TeamFight, Safe, Dive}}
+var sylvanas = Hero{Name: "Sylvanas", Role: RangedAssassin, Comp: []Comp{SplitPush, TeamFight}}
+var tassadar = Hero{Name: "Tassadar", Role: RangedAssassin, Comp: []Comp{Poke, TeamFight}}
+var thebutcher = Hero{Name: "The Butcher", Role: MeleeAssassin, Comp: []Comp{Pick, Dive}}
+var thelostvikings = Hero{Name: "The Lost Vikings", Role: Support, Comp: []Comp{SplitPush}}
+var thrall = Hero{Name: "Thrall", Role: MeleeAssassin, Comp: []Comp{Dive, TeamFight}}
+var tracer = Hero{Name: "Tracer", Role: RangedAssassin, Comp: []Comp{Dive, TeamFight}}
+var tychus = Hero{Name: "Tychus", Role: RangedAssassin, Comp: []Comp{TeamFight, Safe}}
+var tyrael = Hero{Name: "Tyrael", Role: Tank, Comp: []Comp{TeamFight, Dive, Safe}}
+var tyrande = Hero{Name: "Tyrande", Role: Healer, Comp: []Comp{TeamFight, Poke}}
+var uther = Hero{Name: "Uther", Role: Healer, Comp: []Comp{Safe}}
+var valeera = Hero{Name: "Valeera", Role: MeleeAssassin, Comp: []Comp{Dive, Pick}}
+var valla = Hero{Name: "Valla", Role: RangedAssassin, Comp: []Comp{TeamFight, Pick}}
+var varian = Hero{Name: "Varian", Role: Tank, Comp: []Comp{Dive, TeamFight}}
+var whitemane = Hero{Name: "Whitemane", Role: Healer, Comp: []Comp{TeamFight, Safe}}
+var xul = Hero{Name: "Xul", Role: MeleeAssassin, Comp: []Comp{SplitPush, TeamFight}}
+var yrel = Hero{Name: "Yrel", Role: Bruiser, Comp: []Comp{TeamFight, Dive, Safe}}
+var zagara = Hero{Name: "Zagara", Role: RangedAssassin, Comp: []Comp{Poke, SplitPush}}
+var zarya = Hero{Name: "Zarya", Role: Support, Comp: []Comp{TeamFight, Safe}}
+var zeratul = Hero{Name: "Zeratul", Role: MeleeAssassin, Comp: []Comp{Dive, Pick}}
+var zuljin = Hero{Name: "Zul'jin", Role: RangedAssassin, Comp: []Comp{Safe, TeamFight}}
 
 // AllHeroes is a var holding all heroes in the game
 var AllHeroes = []Hero{
 	abathur, alarak, alexstrasza, ana, anduin, anubarak, artanis, arthas, auriel, azmodan, blaze, brightwing, cassia, chen, cho, chromie, dva, deathwing, deckard, dehaka, diablo, etc, falstad, fenix, gall, garrosh, gazlowe, genji, greymane, guldan, hanzo, illidan, imperius, jaina, johanna, junkrat, kaelthas, kelthuzad, kerrigan, kharazim, leoric, lili, liming, ltmorales, lucio, lunara, maiev, malganis, malfurion, malthael, medivh, mephisto, muradin, murky, nazeebo, nova, orphea, probius, qhira, ragnaros, raynor, rehgar, rexxar, samuro, sgthammer, sonya, stitches, stukov, sylvanas, tassadar, thebutcher, thelostvikings, thrall, tracer, tychus, tyrael, tyrande, uther, valeera, valla, varian, whitemane, xul, yrel, zagara, zagara, zeratul, zuljin,
+}
+
+func (candidate Comp) IsInList(list []Comp) bool {
+	for _, comp := range list {
+		if comp == candidate {
+			return true
+		}
+	}
+	return false
 }

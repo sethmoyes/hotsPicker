@@ -136,32 +136,119 @@ func analyzeTeamComp(candidates []string) string {
 
 	var compCountName = make(models.CompCountName, 6)
 
-	compCountName[0].Name = "Team Fight"
+	compCountName[0].Name = models.TeamFight
 	compCountName[0].Count = compCount.TeamFightCount
-	compCountName[1].Name = "Pick"
+	compCountName[1].Name = models.Pick
 	compCountName[1].Count = compCount.PickCount
-	compCountName[2].Name = "Split Push"
+	compCountName[2].Name = models.SplitPush
 	compCountName[2].Count = compCount.SplitPushCount
-	compCountName[3].Name = "Dive"
+	compCountName[3].Name = models.Dive
 	compCountName[3].Count = compCount.DiveCount
-	compCountName[4].Name = "Safe"
+	compCountName[4].Name = models.Safe
 	compCountName[4].Count = compCount.SafeCount
-	compCountName[5].Name = "Poke"
+	compCountName[5].Name = models.Poke
 	compCountName[5].Count = compCount.PokeCount
 
-	fmt.Println(compCountName)
-
-	var greatest string
+	var highestPointComps []models.Comp
 	var n int
 	//DOES NOT CONSIDER TIED VALUES
 	for _, v := range compCountName {
 		if v.Count > n {
 			n = v.Count
-			greatest = v.Name
+			// greatest = v.Name
+		}
+	}
+	for _, v := range compCountName {
+		if v.Count == n {
+			highestPointComps = append(highestPointComps, v.Name)
 		}
 	}
 
-	return greatest
+	var suggestions string
+	if len(allHeroes) > 2 && len(allHeroes) < 5 {
+		suggestions = suggestHeroesForComp(allHeroes, highestPointComps)
+	}
+
+	comps := generateCompList(highestPointComps)
+
+	var stringToReturn string
+
+	if len(highestPointComps) == 1 {
+		stringToReturn = fmt.Sprintf("***Your most viable comp is*** __%s__\n", comps)
+	} else {
+		stringToReturn = fmt.Sprintf("***Your most viable comps are*** __%s__\n", comps)
+	}
+
+	if len(suggestions) > 0 {
+		stringToReturn = fmt.Sprintf("%sHere are some suggestions...\n%s", stringToReturn, suggestions)
+	}
+	return stringToReturn
+	// return fmt.Sprintf("Comp Type - Points\n%s - %d\n%s - %d\n%s - %d\n%s - %d\n%s - %d\n%s - %d\n", compCountName[0].Name, compCountName[0].Count, compCountName[1].Name, compCountName[1].Count, compCountName[2].Name, compCountName[2].Count, compCountName[3].Name, compCountName[3].Count, compCountName[4].Name, compCountName[4].Count, compCountName[5].Name, compCountName[5].Count)
+}
+
+func suggestHeroesForComp(heroes []models.Hero, highestCompType []models.Comp) string {
+	var heroSuggestions string
+	var hasHealer, hasTank, hasBrusier, hasMeleeAssassin, hasRangedAssassin bool
+
+	for _, hero := range heroes {
+		switch hero.Role {
+		case models.Healer:
+			hasHealer = true
+		case models.Tank:
+			hasTank = true
+		case models.Bruiser:
+			hasBrusier = true
+		case models.MeleeAssassin:
+			hasMeleeAssassin = true
+		case models.RangedAssassin:
+			hasRangedAssassin = true
+		}
+	}
+
+	for _, comp := range highestCompType {
+		var suggestionsForComp string
+		if !hasHealer {
+			suggestionsForComp += concatSuggestions(models.Healer, comp)
+		}
+		if !hasTank {
+			suggestionsForComp += concatSuggestions(models.Tank, comp)
+		}
+		if !hasBrusier {
+			suggestionsForComp += concatSuggestions(models.Bruiser, comp)
+		}
+		if !hasRangedAssassin {
+			suggestionsForComp += concatSuggestions(models.RangedAssassin, comp)
+		}
+		if !hasMeleeAssassin {
+			suggestionsForComp += concatSuggestions(models.MeleeAssassin, comp)
+		}
+		heroSuggestions += suggestionsForComp + "\n"
+	}
+
+	return heroSuggestions
+}
+
+func concatSuggestions(role models.Role, comp models.Comp) string {
+	var suggestionsForComp string
+	suggestions := filterForHeroByRoleAndComp(role, comp)
+	var sugg string
+	for _, suggestion := range suggestions {
+		sugg += suggestion.Name + "/"
+	}
+	suggestionsForComp += fmt.Sprintf("You need a **%s**. For **%s** try %s\n", string(role), getCompName(comp), strings.Trim(sugg, "/"))
+	return suggestionsForComp
+}
+
+func filterForHeroByRoleAndComp(role models.Role, comp models.Comp) []models.Hero {
+	var suitableHeroes []models.Hero
+
+	for _, hero := range models.AllHeroes {
+		if hero.Role == role && comp.IsInList(hero.Comp) {
+			suitableHeroes = append(suitableHeroes, hero)
+		}
+	}
+
+	return suitableHeroes
 }
 
 func stateHeroInfo(candidate string) string {
@@ -215,7 +302,7 @@ func generateCompList(comp []models.Comp) string {
 }
 
 func getHelpDialogue() string {
-	return "This is the help menu\nUse the command '/hots *hero-name*' to query a hero\nUse '/hots team *hero-name*' with up to five hero names to see what type of comp you are going and who would make a good addition to your team"
+	return "This is the help menu\nUse the command '/hots *hero-name*' to query a hero\nUse '/hots team *hero-name*' with up to five hero names to see what type of comp you are going and who would make a good addition to your team\nNeed suggestions? Use '/hots team *hero-name* (include three or four heroes this way) too see what kind of comp you are running and who would be a nice addition to your team.\n"
 }
 
 func stateHeroRolls(candidate string) string {
